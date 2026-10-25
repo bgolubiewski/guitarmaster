@@ -1,0 +1,50 @@
+{
+    "categories": [
+        "A",
+        "C"
+    ],
+    "chords": [
+        {
+            "name": "A",
+            "frets": [
+                -1,
+                0,
+                2,
+                2,
+                2,
+                0
+            ],
+            "barres": [],
+            "base_fret": 1,
+            "category": "A"
+        },
+        {
+            "name": "Amin",
+            "frets": [
+                -1,
+                0,
+                2,
+                2,
+                1,
+                0
+            ],
+            "barres": [],
+            "base_fret": 1,
+            "category": "A"
+        },
+        {
+            "name": "C",
+            "frets": [
+                -1,
+                3,
+                2,
+                0,
+                1,
+                0
+            ],
+            "barres": [],
+            "base_fret": 1,
+            "category": "C"
+        }
+    ]
+}
