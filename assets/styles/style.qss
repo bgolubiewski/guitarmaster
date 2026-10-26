@@ -1,0 +1,731 @@
+/*
+=====================================================================================================
+                                   TABLE OF CONTENTS & LEGEND
+=====================================================================================================
+
+  AVAILABLE COLOR VARIABLES:
+    - COLORS: {background}, {surface}, {surface_hover}, {surface_variant}, {card_bg}, {card_bg_hover},
+              {card_border}, {primary}, {primary_hover}, {accent}, {text}, {text_secondary}, 
+              {text_on_primary}, {border}, {danger}, {fretboard_nut}
+    - ICON COLORS: {icon_default}, {icon_active}, {icon_hover}, {icon_disabled}, {icon_danger}, 
+                   {icon_danger_hover}
+
+  STRUCTURE:
+    1.0 GENERAL & GLOBAL COMPONENTS
+        1.1 Navigation Bar
+        1.2 Placeholder Page
+        1.3 Status Bar
+        1.4 Dialogs & Message Boxes
+    2.0 CHORD LIBRARY PAGE & OVERLAYS
+        2.1 Main Page & Splitter
+        2.2 Floating Size Selector Overlay
+    3.0 SIDEBAR & LEGEND NAVIGATION
+        3.1 Sidebar Header & Container
+        3.2 Legend Items & Drag Handle
+        3.3 Sidebar Action Buttons
+    4.0 CATEGORY SECTIONS
+        4.1 Category Header Widget
+        4.2 Category Grid Container (Drag & Drop)
+    5.0 CARDS & PLACEHOLDERS
+        5.1 Chord Card Widget
+        5.2 Add Card Placeholder Widget
+    6.0 EDITOR PANEL SIDEBAR
+        6.1 Panel Structure & Typography
+        6.2 Form Inputs & Diagram Container
+        6.3 Action Buttons (Primary, Secondary, Danger)
+    7.0 SCROLLBARS
+=====================================================================================================
+*/
+
+
+/* ===================================================================================================
+   1.0 GENERAL & GLOBAL COMPONENTS
+   =================================================================================================== */
+
+    /* ---------------------------------------------------------------------------------------------------
+    1.1 Navigation Bar (Page Select)
+    --------------------------------------------------------------------------------------------------- */
+
+        QWidget#navBar {
+            background-color: {surface};
+            border-bottom: 2px solid {border};
+        }
+
+        QPushButton#navButton {
+            background-color: transparent;
+            color: {text_secondary};
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+        }
+
+        QPushButton#navButton:hover {
+            background-color: {surface_hover};
+            color: {text};
+        }
+
+        /* Stan aktywny (activated by setProperty("active", True)) */
+        QPushButton#navButton[active="true"] {
+            background-color: {surface_hover};
+            color: {primary};
+        }
+
+        /* Stan zablokowany */
+        QPushButton#navButton:disabled {
+            color: {icon_disabled};
+            background-color: transparent;
+        }
+
+    /* ---------------------------------------------------------------------------------------------------
+    1.2 Placeholder Page
+    --------------------------------------------------------------------------------------------------- */
+
+        QWidget#placeholderPage {
+            background-color: {background};
+        }
+
+        QLabel#placeholderLabel {
+            font-size: 16px;
+            color: {text_secondary};
+            font-weight: bold;
+        }
+
+    /* ---------------------------------------------------------------------------------------------------
+    1.3 Status Bar
+    --------------------------------------------------------------------------------------------------- */
+
+        QStatusBar#mainStatusBar {
+            background-color: {text_secondary};
+            border-top: 1px solid {border};
+            color: {text_secondary};
+        }
+
+        QLabel#statusBarVersion {
+            font-size: 11px;
+            font-weight: bold;
+            color: {text_on_primary};
+        }
+
+    /* ---------------------------------------------------------------------------------------------------
+    1.4 Dialogs & Message Boxes
+    --------------------------------------------------------------------------------------------------- */
+
+        QMessageBox {
+            background-color: {surface};
+            color: {text};
+        }
+
+        QMessageBox QLabel {
+            color: {text};
+            font-size: 13px;
+        }
+
+        QMessageBox QPushButton {
+            background-color: {surface_hover};
+            color: {text};
+            border: 1px solid {border};
+            border-radius: 4px;
+            padding: 6px 14px;
+            min-width: 60px;
+        }
+
+        QMessageBox QPushButton:hover {
+            background-color: {primary};
+            color: {background};
+            border-color: {primary};
+        }
+
+        QMessageBox#deleteConfirmDialog {
+            border: 1px solid {danger};
+        }
+
+        QMessageBox#deleteConfirmDialog QPushButton[text="&Yes"],
+        QMessageBox#deleteConfirmDialog QPushButton[text="Yes"] {
+            background-color: {danger};
+            color: {text};
+            border: none;
+        }
+
+        QMessageBox#deleteConfirmDialog QPushButton[text="&Yes"]:hover,
+        QMessageBox#deleteConfirmDialog QPushButton[text="Yes"]:hover {
+            background-color: {icon_danger_hover};
+        }
+
+
+/* ===================================================================================================
+   2.0 CHORD LIBRARY PAGE & OVERLAYS
+   =================================================================================================== */
+
+    /* ---------------------------------------------------------------------------------------------------
+    2.1 Main Page, Splitter & Library Grid
+    --------------------------------------------------------------------------------------------------- */
+
+        QWidget#chordLibraryPage {
+            background-color: {background};
+        }
+
+        QWidget#LibraryGrid {
+            background-color: {background};
+            border: none;
+        }
+
+        #LibraryGrid QScrollArea,
+        #LibraryGrid QScrollArea > QWidget > QWidget {
+            background-color: transparent;
+            border: none;
+        }
+
+        QSplitter#chordLibrarySplitter::handle {
+            background-color: {border};
+            width: 3px;
+        }
+
+        QSplitter#chordLibrarySplitter::handle:hover {
+            background-color: {primary};
+        }
+
+    /* ---------------------------------------------------------------------------------------------------
+    2.2 Floating Size Selector Overlay
+    --------------------------------------------------------------------------------------------------- */
+
+        QFrame#sizeSelectorFrame {
+            background-color: {surface};
+            border: 1px solid {border};
+            border-radius: 12px;
+        }
+
+        QLabel#sizeSelectorLabel {
+            font-size: 11px;
+            font-weight: bold;
+            color: {text_secondary};
+        }
+
+        QComboBox#sizeSelectorCombo {
+            font-size: 11px;
+            font-weight: bold;
+            color: {text};
+            background-color: {surface_variant};
+            border: 1px solid {border};
+            border-radius: 4px;
+            padding: 2px 18px 2px 6px;
+        }
+
+        QComboBox#sizeSelectorCombo::drop-down {
+            border: none;
+        }
+
+        QComboBox#sizeSelectorCombo QAbstractItemView {
+            background-color: {surface_hover};
+            color: {text};
+            selection-background-color: {primary};
+            border: 1px solid {border};
+        }
+
+
+/* ===================================================================================================
+   3.0 SIDEBAR & LEGEND NAVIGATION
+   =================================================================================================== */
+
+    /* ---------------------------------------------------------------------------------------------------
+    3.1 Sidebar Header & Container
+    --------------------------------------------------------------------------------------------------- */
+
+        QWidget#sidebarWidget {
+            background-color: {surface};
+            border: none;
+        }
+
+        QLabel#sidebarLegendTitle {
+            color: {text_secondary};
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            padding: 12px 4px 6px 4px;
+        }
+
+        #LegendContainer {
+            background-color: transparent;
+            border: none;
+        }
+
+        #LegendContainer[dragState="drag_active"] {
+            background-color: {surface};
+            border-radius: 8px;
+        }
+
+        #LegendContainer[dragState="drag_hover"] {
+            background-color: {surface_hover};
+            border-radius: 8px;
+        }
+
+    /* ---------------------------------------------------------------------------------------------------
+    3.2 Legend Items & Drag Handle
+    --------------------------------------------------------------------------------------------------- */
+
+        #LegendItemWidget {
+            background-color: transparent;
+            border-radius: 6px;
+        }
+
+        #LegendItemWidget:hover {
+            background-color: {surface};
+        }
+
+        QPushButton#LegendCategoryButton {
+            background-color: transparent;
+            color: {text_secondary};
+            text-align: left;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 2px 0px;
+            border: none;
+        }
+
+        QPushButton#LegendCategoryButton:hover {
+            color: {primary_hover};
+            text-decoration: underline;
+        }
+
+        QPushButton#LegendDragHandle {
+            background: transparent;
+            border: none;
+            padding: 0px;
+        }
+
+    /* ---------------------------------------------------------------------------------------------------
+    3.3 Sidebar Action Buttons
+    --------------------------------------------------------------------------------------------------- */
+
+        QPushButton#addCategoryButton {
+            background-color: {surface_variant};
+            color: {text};
+            border: 2px dashed {primary};
+            border-radius: 6px;
+            padding: 8px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        QPushButton#addCategoryButton:hover {
+            background-color: {surface_hover};
+            color: {primary_hover};
+            border: 2px dashed {primary_hover};
+            border-radius: 6px;
+        }
+
+        QPushButton#addCategoryButton:disabled {
+            background-color: {surface};
+            color: {text_secondary};
+            border: 1px dashed {border};
+        }
+
+
+/* ===================================================================================================
+   4.0 CATEGORY SECTIONS
+   =================================================================================================== */
+
+    /* ---------------------------------------------------------------------------------------------------
+    4.1 Category Header Widget
+    --------------------------------------------------------------------------------------------------- */
+
+        QLabel#CategoryHeaderTitle {
+            font-size: 18px;
+            font-weight: bold;
+            color: {text};
+        }
+
+        QLabel#CategoryHeaderArrow {
+            background-color: transparent;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        QLabel#CategoryHeaderArrow:hover {
+            background-color: {surface_hover};
+            border: 1px solid {border};
+        }
+
+        QLineEdit#CategoryHeaderEdit {
+            font-size: 16px;
+            font-weight: bold;
+            color: {text};
+            background-color: {surface_hover};
+            border: 2px solid {primary};
+            border-radius: 4px;
+            padding: 2px 6px;
+            selection-background-color: {primary};
+            selection-color: {text};
+        }
+
+        QLineEdit#CategoryHeaderEdit:focus {
+            border: 2px solid {accent};
+        }
+
+        QPushButton#CategoryHeaderEditButton,
+        QPushButton#CategoryHeaderDeleteButton {
+            background-color: {surface};
+            border: 1px solid {border};
+            border-radius: 4px;
+            padding: 0px;
+        }
+
+        QPushButton#CategoryHeaderEditButton:hover {
+            background-color: {surface_hover};
+            border: 1px solid {accent};
+        }
+
+        QPushButton#CategoryHeaderDeleteButton:hover {
+            background-color: {surface_hover};
+            border: 1px solid {danger};
+        }
+
+        QPushButton#CategoryHeaderEditButton:pressed {
+            background-color: {background};
+            border: 1px solid {primary};
+        }
+
+        QPushButton#CategoryHeaderDeleteButton:pressed {
+            background-color: {background};
+            border: 1px solid {danger};
+        }
+
+    /* ---------------------------------------------------------------------------------------------------
+    4.2 Category Grid Container (Drag & Drop States)
+    --------------------------------------------------------------------------------------------------- */
+
+        QFrame#CategoryGrid {
+            border-radius: 8px;
+        }
+
+        QFrame#CategoryGrid[dragState="normal"] {
+            background-color: transparent;
+            border: 2px solid transparent;
+        }
+
+        QFrame#CategoryGrid[dragState="drag_active"] {
+            background-color: {surface_hover};
+            border: 2px dashed {border};
+        }
+
+        QFrame#CategoryGrid[dragState="drag_hover"] {
+            background-color: {surface};
+            border: 2px solid {primary};
+        }
+
+
+/* ===================================================================================================
+   5.0 CARDS & PLACEHOLDERS
+   =================================================================================================== */
+
+/* ---------------------------------------------------------------------------------------------------
+   5.1 Chord Card Widget
+   --------------------------------------------------------------------------------------------------- */
+QFrame#ChordCard {
+    background-color: {card_bg};
+    border: 1px solid {card_border};
+    border-radius: 8px;
+}
+
+QFrame#ChordCard:hover {
+    background-color: {card_bg_hover};
+    border: 1px solid {primary};
+}
+
+QLabel#ChordCardTitle {
+    font-weight: bold;
+    color: {text};
+    font-size: 15px;
+}
+
+QLabel#ChordCardTitle[small="true"] {
+    font-size: 12px;
+}
+
+QPushButton#ChordCardDragHandle,
+QPushButton#ChordCardEditButton {
+    background-color: {surface};
+    border: 1px solid {border};
+    border-radius: 4px;
+    padding: 0px;
+}
+
+QPushButton#ChordCardDragHandle:hover,
+QPushButton#ChordCardEditButton:hover {
+    background-color: {surface_hover};
+    border: 1px solid {accent};
+}
+
+QPushButton#ChordCardDragHandle:pressed,
+QPushButton#ChordCardEditButton:pressed {
+    background-color: {background};
+    border: 1px solid {primary};
+}
+
+/* ---------------------------------------------------------------------------------------------------
+   5.2 Add Card Placeholder Widget
+   --------------------------------------------------------------------------------------------------- */
+QFrame#AddCard {
+    background-color: {surface};
+    border: 2px dashed {border};
+    border-radius: 8px;
+}
+
+QFrame#AddCard:hover {
+    background-color: {surface_hover};
+    border: 2px dashed {primary};
+}
+
+QLabel#PlusLabel {
+    font-size: 36px;
+    font-weight: bold;
+    color: {text_secondary};
+    margin-bottom: -5px;
+}
+
+QFrame#AddCard:hover QLabel#PlusLabel {
+    color: {primary};
+}
+
+QLabel#TxtLabel {
+    font-size: 11px;
+    font-weight: bold;
+    color: {text_secondary};
+}
+
+QFrame#AddCard:hover QLabel#TxtLabel {
+    color: {text};
+}
+
+/* Skalowanie dla małych kart */
+QFrame#AddCard[small="true"] QLabel#PlusLabel {
+    font-size: 26px;
+}
+
+QFrame#AddCard[small="true"] QLabel#TxtLabel {
+    font-size: 9px;
+}
+
+
+/* ===================================================================================================
+   6.0 EDITOR PANEL SIDEBAR
+   =================================================================================================== */
+
+/* ---------------------------------------------------------------------------------------------------
+   6.1 Panel Structure & Typography
+   --------------------------------------------------------------------------------------------------- */
+QWidget#EditorPanel {
+    background-color: {background};
+    border-left: 1px solid {border};
+}
+
+QLabel#EditorTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: {text};
+    margin-bottom: 4px;
+}
+
+QLabel#FieldLabel {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: {text_secondary};
+    margin-top: 6px;
+    margin-bottom: 2px;
+}
+
+/* ---------------------------------------------------------------------------------------------------
+   6.2 Form Inputs & Diagram Container
+   --------------------------------------------------------------------------------------------------- */
+QLineEdit#EditorInput, 
+QSpinBox#EditorSpinBox {
+    background-color: {surface_variant};
+    border: 1px solid {border};
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: {text};
+    font-size: 13px;
+    selection-background-color: {primary};
+}
+
+QLineEdit#EditorInput:focus, 
+QSpinBox#EditorSpinBox:focus {
+    border: 1px solid {primary};
+    background-color: {surface};
+}
+
+QLineEdit#EditorInput:read-only {
+    color: {text_secondary};
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+QFrame#DiagramContainer {
+    background-color: {surface_variant};
+    border: 1px solid {border};
+    border-radius: 10px;
+    padding: 12px;
+}
+
+/* ---------------------------------------------------------------------------------------------------
+   6.3 Action Buttons
+   --------------------------------------------------------------------------------------------------- */
+QPushButton#PrimaryButton {
+    background-color: {primary};
+    color: {text_on_primary};
+    font-weight: bold;
+    font-size: 13px;
+    border-radius: 6px;
+    padding: 9px 18px;
+    border: none;
+}
+
+QPushButton#PrimaryButton:hover {
+    background-color: {primary_hover};
+}
+
+QPushButton#SecondaryButton {
+    background-color: transparent;
+    color: {text};
+    font-size: 13px;
+    border: 1px solid {border};
+    border-radius: 6px;
+    padding: 8px 16px;
+}
+
+QPushButton#SecondaryButton:hover {
+    background-color: {surface_hover};
+    border-color: {text_secondary};
+}
+
+QPushButton#DangerButton {
+    background-color: transparent;
+    color: {danger};
+    font-size: 12px;
+    border: 1px solid {border};
+    border-radius: 6px;
+    padding: 8px 12px;
+}
+
+QPushButton#DangerButton:hover {
+    background-color: {surface_hover};
+    color: {danger};
+    border-color: {danger};
+}
+
+/* Przycisk zamknięcia / wyjścia z przezroczystą ramką i tłem */
+QPushButton#btn_exit {
+    background-color: transparent;
+    border: none;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+QPushButton#btn_exit:hover {
+    background-color: {surface_hover};
+    border: none;
+}
+
+QPushButton#btn_exit:pressed {
+    background-color: {surface};
+    border: none;
+}
+
+/* ===================================================================================================
+   7.0 SCROLLBARS
+   =================================================================================================== */
+
+/* ---------------------------------------------------------------------------------------------------
+   7.1 Vertical ScrollBar (Pionowy)
+   --------------------------------------------------------------------------------------------------- */
+QScrollBar:vertical {
+    border: none;
+    background-color: transparent;
+    width: 6px;                  /* Szerokość paska */
+    margin: 0px 0px 0px 0px;
+}
+
+/* Uchwyt (suwak) */
+QScrollBar::handle:vertical {
+    background-color: {border};
+    min-height: 24px;
+    border-radius: 3px;          /* Zaokrąglone rogi (połowa szerokości) */
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: {primary};
+}
+
+QScrollBar::handle:vertical:pressed {
+    background-color: {primary_hover};
+}
+
+/* Całkowite usunięcie przycisków strzałek (góra/dół) */
+QScrollBar::sub-line:vertical,
+QScrollBar::add-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical {
+    background: none;
+    width: 0px;
+    height: 0px;
+}
+
+/* Tło toru suwaka (obszar nad i pod suwakiem) */
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+
+/* ---------------------------------------------------------------------------------------------------
+   7.2 Horizontal ScrollBar (Poziomy)
+   --------------------------------------------------------------------------------------------------- */
+QScrollBar:horizontal {
+    border: none;
+    background-color: transparent;
+    height: 6px;                 /* Wysokość paska */
+    margin: 0px 0px 0px 0px;
+}
+
+/* Uchwyt (suwak) */
+QScrollBar::handle:horizontal {
+    background-color: {border};
+    min-width: 24px;
+    border-radius: 3px;          /* Zaokrąglone rogi */
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: {primary};
+}
+
+QScrollBar::handle:horizontal:pressed {
+    background-color: {primary_hover};
+}
+
+QScrollBar::sub-line:horizontal,
+QScrollBar::add-line:horizontal {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+QScrollBar::left-arrow:horizontal,
+QScrollBar::right-arrow:horizontal {
+    background: none;
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: text_secondary;
+}
